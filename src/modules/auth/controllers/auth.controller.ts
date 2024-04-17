@@ -24,6 +24,7 @@ export class AuthController {
     constructor(private userService: UserService, private authService: AuthService) {}
 
     //TODO: перенести guard в функционал сервиса юзеров при создании сущности
+    //TODO: разделить создание и редактирование дто
     @UseGuards(UsernameExistGuard)
     @HttpCode(HttpStatus.CREATED)
     @Post('registration')
