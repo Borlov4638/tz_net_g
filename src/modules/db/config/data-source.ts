@@ -6,7 +6,7 @@ export default new DataSource({
     port: 5432,
     username: 'root',
     password: '12345',
-    database: 'tz_artel',
+    database: 'tz_net_g',
     migrations: ['src/**/migrations/**/*{.ts,.js}'],
     entities: ['src/**/*.entity{.ts, .js}'],
     synchronize: false,

@@ -6,6 +6,8 @@ import { CryptoService } from '../../utils/crypto/crypto.service';
 import { UserEntity } from '../entities/user.entity';
 import { UserDataWithoutPassword } from '../types/user-without-pass.type';
 
+//TODO: вынести методы работы с БД в репозиторий
+
 @Injectable()
 export class UserService {
     constructor(

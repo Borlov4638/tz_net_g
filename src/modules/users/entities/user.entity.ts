@@ -1,3 +1,4 @@
+import { TaskEntity } from '../../../modules/tasks/entities/task.entity';
 import {
     Column,
     CreateDateColumn,
@@ -5,8 +6,6 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { ArticleEntity } from '../../articles/entities/article.entity';
 
 @Entity()
 export class UserEntity {
@@ -20,6 +19,6 @@ export class UserEntity {
     password: string;
     @CreateDateColumn()
     createdAt: string;
-    @OneToMany(() => ArticleEntity, (article) => article.user)
-    articles: ArticleEntity[];
+    @OneToMany(() => TaskEntity, (task) => task.user)
+    articles: TaskEntity[];
 }
