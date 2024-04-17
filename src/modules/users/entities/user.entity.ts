@@ -1,4 +1,3 @@
-import { TaskEntity } from '../../../modules/tasks/entities/task.entity';
 import {
     Column,
     CreateDateColumn,
@@ -6,6 +5,8 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { TaskEntity } from '../../../modules/tasks/entities/task.entity';
 
 @Entity()
 export class UserEntity {

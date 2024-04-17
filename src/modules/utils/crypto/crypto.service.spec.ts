@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CryptoService } from './crypto.service';
 import * as bcrypt from 'bcrypt';
+
+import { CryptoService } from './crypto.service';
 
 jest.mock('bcrypt', () => ({
     genSalt: jest.fn(),

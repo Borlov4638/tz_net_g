@@ -1,6 +1,7 @@
-import { UserEntity } from '../../../modules/users/entities/user.entity';
 import { Entity } from 'typeorm';
 import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { UserEntity } from '../../../modules/users/entities/user.entity';
 
 @Entity()
 export class TaskEntity {

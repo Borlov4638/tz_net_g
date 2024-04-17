@@ -1,11 +1,12 @@
-import { Repository } from 'typeorm';
-import { CryptoService } from '../../../modules/utils/crypto/crypto.service';
-import { UserService } from './user.service';
+import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { CryptoService } from '../../../modules/utils/crypto/crypto.service';
 import { UserEntity } from '../entities/user.entity';
 import { UserDataWithoutPassword } from '../types/user-without-pass.type';
-import { UnauthorizedException } from '@nestjs/common';
+import { UserService } from './user.service';
 
 describe('UserService', () => {
     let service: UserService;
