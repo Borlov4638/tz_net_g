@@ -2,7 +2,7 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { GenericFilter } from '../../../modules/utils/generic/generic-parigation-filter';
 
-enum TasksSortByEnum {
+export enum TasksSortByEnum {
     id = 'id',
     title = 'title',
     description = 'description',

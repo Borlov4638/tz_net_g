@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RedisManagerService } from 'src/modules/redis/services/redis-manager.service';
+import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
 
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
@@ -63,7 +63,7 @@ export class TaskService {
 
         // Store in cache for 5 minutes
         this.redisService.set(
-            `ONE_ARTICLE/${id}`,
+            `ONE_TASK/${id}`,
             task,
             +this.configService.get<number>('TASK_CACHE_TIME'),
         );

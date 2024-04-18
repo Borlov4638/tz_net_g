@@ -12,7 +12,7 @@ import { Response } from 'express';
 import { User } from '../../../decorators/get-user-from-request.decorator';
 import { UserDataWithoutPassword } from '../../../modules/users/types/user-without-pass.type';
 import { UserService } from '../../users/services/user.service';
-import { UserLoginAndRegistrationDTO } from '../dto/user-registration.dto';
+import { UserRegistrationDTO } from '../dto/user-registration.dto';
 import { LocalAuthGuard } from '../guards/local-auth-guard.guard';
 import { RefreshTokenAuthGuard } from '../guards/refresh-jwt.guard';
 import { UsernameExistGuard } from '../guards/user-exists.guard';
@@ -24,12 +24,11 @@ export class AuthController {
     constructor(private userService: UserService, private authService: AuthService) {}
 
     //TODO: перенести guard в функционал сервиса юзеров при создании сущности
-    //TODO: разделить создание и редактирование дто
     @UseGuards(UsernameExistGuard)
     @HttpCode(HttpStatus.CREATED)
     @Post('registration')
     async registerUser(
-        @Body() dto: UserLoginAndRegistrationDTO,
+        @Body() dto: UserRegistrationDTO,
     ): Promise<UserDataWithoutPassword> {
         return this.userService.createUser(dto.email, dto.password, dto.username);
     }
