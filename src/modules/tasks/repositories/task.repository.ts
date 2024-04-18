@@ -3,15 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { CreateTaskDTO } from '../dto/create-task.dto';
-import { TaskEntity } from '../entities/task.entity';
-import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
+import { UpdateTaskDTO } from '../dto/update-task.dto';
+import { TaskEntity } from '../entities/task.entity';
+import { AllTasksViewModel } from '../services/task.service';
 
 @Injectable()
 export class TaskRepository {
     constructor(@InjectRepository(TaskEntity) private taskRepo: Repository<TaskEntity>) {}
 
-    async getAllWithPagination(query: GetAllTasksQuery) {
+    async getAllWithPagination(query: GetAllTasksQuery): Promise<AllTasksViewModel> {
         const page = +query.page || 1;
         const pageSize = +query.pageSize || 10;
         const skip = (page - 1) * pageSize;

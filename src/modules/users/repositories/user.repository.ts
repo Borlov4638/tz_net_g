@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
+
+import { UserEntity } from '../entities/user.entity';
 import { UserDataWithoutPassword } from '../types/user-without-pass.type';
 
 @Injectable()

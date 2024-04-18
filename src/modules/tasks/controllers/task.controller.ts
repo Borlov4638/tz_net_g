@@ -17,10 +17,10 @@ import { AccessTokenAuthGuard } from 'src/modules/auth/guards/access-jwt.guard';
 import { UsersAccessTokenPayload } from 'src/modules/auth/types/access-token-payload.type';
 
 import { CreateTaskDTO } from '../dto/create-task.dto';
+import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
+import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
 import { TaskService } from '../services/task.service';
-import { UpdateTaskDTO } from '../dto/update-task.dto';
-import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 
 @Controller('tasks')
 export class TaskController {

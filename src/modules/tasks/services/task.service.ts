@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { TaskRepository } from '../repositories/task.repository';
-import { CreateTaskDTO } from '../dto/create-task.dto';
-import { TaskEntity } from '../entities/task.entity';
-import { RedisManagerService } from 'src/modules/redis/services/redis-manager.service';
 import { ConfigService } from '@nestjs/config';
-import { UpdateTaskDTO } from '../dto/update-task.dto';
+import { RedisManagerService } from 'src/modules/redis/services/redis-manager.service';
+
+import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
+import { UpdateTaskDTO } from '../dto/update-task.dto';
+import { TaskEntity } from '../entities/task.entity';
+import { TaskRepository } from '../repositories/task.repository';
 //TODO: переместить тип в отдельный файл
 export class AllTasksViewModel {
     meta: {

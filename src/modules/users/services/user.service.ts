@@ -1,13 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { CryptoService } from '../../utils/crypto/crypto.service';
 import { UserEntity } from '../entities/user.entity';
-import { UserDataWithoutPassword } from '../types/user-without-pass.type';
 import { UserRepository } from '../repositories/user.repository';
-
-//TODO: вынести методы работы с БД в репозиторий
+import { UserDataWithoutPassword } from '../types/user-without-pass.type';
 
 @Injectable()
 export class UserService {
