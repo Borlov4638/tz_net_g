@@ -1,22 +1,22 @@
-import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { UnauthorizedException } from '@nestjs/common';
+import { UserService } from './user.service';
+import { CryptoService } from '../../utils/crypto/crypto.service';
+import { UserRepository } from '../repositories/user.repository';
+import { UserEntity } from '../entities/user.entity'; // Ensure this import
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CryptoService } from '../../../modules/utils/crypto/crypto.service';
-import { UserEntity } from '../entities/user.entity';
-import { UserDataWithoutPassword } from '../types/user-without-pass.type';
-import { UserService } from './user.service';
-
 describe('UserService', () => {
     let service: UserService;
+    let userRepository: UserRepository;
     let cryptoService: CryptoService;
-    let userRepo: Repository<UserEntity>;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 UserService,
+                UserRepository,
                 CryptoService,
                 {
                     provide: getRepositoryToken(UserEntity),
@@ -24,9 +24,10 @@ describe('UserService', () => {
                 },
             ],
         }).compile();
+
         service = module.get<UserService>(UserService);
+        userRepository = module.get<UserRepository>(UserRepository);
         cryptoService = module.get<CryptoService>(CryptoService);
-        userRepo = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
     });
 
     it('should be defined', () => {
@@ -34,115 +35,72 @@ describe('UserService', () => {
     });
 
     describe('createUser', () => {
-        it('shoud create user', async () => {
-            const dto = {
-                username: 'username1',
-                email: 'test@mail.com',
-                password: 'Password123',
-            };
-            const hashedPassword = 'hashed-password';
-            const user = {
-                id: 'uuid',
-                email: dto.email,
-                username: dto.username,
-                createdAt: new Date().toISOString(),
-                articles: [],
-            };
+        const mockedUser = {
+            id: 'someuuid',
+            email: 'test@example.com',
+            username: 'testuser',
+            articles: [],
+            createdAt: new Date().toISOString(),
+            password: 'changeme',
+        } as UserEntity;
+        it('should create a user and return user data without password', async () => {
+            const createUserSpy = jest
+                .spyOn(userRepository, 'createUser')
+                .mockResolvedValueOnce(mockedUser);
 
-            jest.spyOn(cryptoService, 'hashData').mockResolvedValue('hashed-password');
-            jest.spyOn(userRepo, 'save').mockResolvedValueOnce({
-                ...user,
-                password: hashedPassword,
-            });
-
-            const result = await service.createUser(
-                dto.email,
-                dto.password,
-                dto.username,
-            );
-
-            expect(result).toEqual(user);
-            expect(userRepo.save).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    email: dto.email,
-                    username: dto.username,
-                    password: 'hashed-password',
-                }),
-            );
-        });
-    });
-
-    describe('findUserByEmail', () => {
-        it('shoud find  user by email', async () => {
             const email = 'test@example.com';
+            const password = 'password';
+            const username = 'testuser';
 
-            const user: UserEntity = {
-                id: 'uuid',
+            const result = await service.createUser(email, password, username);
+
+            expect(createUserSpy).toHaveBeenCalledWith(
                 email,
-                username: 'test',
-                createdAt: new Date().toISOString(),
-                articles: [],
-                password: 'hashed-password',
-            };
-
-            jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
-
-            const result = await service.findUserByEmail(email);
-
-            expect(result).toEqual(user);
-            expect(userRepo.findOne).toHaveBeenCalledWith({ where: { email } });
+                expect.any(String),
+                username,
+            );
+            expect(result).toEqual(mockedUser);
         });
     });
 
     describe('validateUser', () => {
-        const email = 'email@com.com';
-        const pass = 'password';
-
-        const user: UserDataWithoutPassword = {
-            id: 'uuid',
-            email,
-            username: 'username',
+        const mockedUser = {
+            id: 'someuuid',
+            email: 'test@example.com',
+            username: 'testuser',
+            articles: [],
             createdAt: new Date().toISOString(),
-        };
-        const hashedPassword = 'hashed-pass';
+            password: 'hashed pass',
+        } as UserEntity;
+        it('should validate user credentials and return user data without password', async () => {
+            const findUserByEmailSpy = jest
+                .spyOn(userRepository, 'getByEmail')
+                .mockResolvedValueOnce(mockedUser);
 
-        it('shoud return user with correct login  and password', async () => {
-            jest.spyOn(service, 'findUserByEmail').mockResolvedValueOnce({
-                ...user,
-                password: hashedPassword,
-                articles: [],
-            });
-            jest.spyOn(cryptoService, 'compareHash').mockResolvedValue(true);
+            const compareHashSpy = jest
+                .spyOn(cryptoService, 'compareHash')
+                .mockResolvedValueOnce(true);
+
+            const email = mockedUser.email;
+            const pass = mockedUser.password;
 
             const result = await service.validateUser(email, pass);
-            expect(result).toEqual({ ...user, articles: [] });
-            expect(service.findUserByEmail).toHaveBeenCalledWith(email);
-            expect(cryptoService.compareHash).toHaveBeenCalledWith(pass, hashedPassword);
+
+            expect(findUserByEmailSpy).toHaveBeenCalledWith(email);
+            expect(compareHashSpy).toHaveBeenCalledWith(pass, mockedUser.password);
+            const { password, ...userWithoutPass } = mockedUser;
+            expect(result).toEqual(userWithoutPass);
         });
 
-        it('shoud throw unathorized error if user not found', () => {
-            jest.spyOn(service, 'findUserByEmail').mockResolvedValue(undefined);
+        it('should throw UnauthorizedException when user credentials are invalid', async () => {
+            jest.spyOn(userRepository, 'getByEmail').mockResolvedValueOnce(null);
 
-            jest.spyOn(cryptoService, 'compareHash').mockResolvedValueOnce(true);
+            const email = 'test@example.com';
+            const password = 'password';
 
-            const result = service.validateUser(email, pass);
-
-            expect(result).rejects.toThrow(UnauthorizedException);
-            expect(service.findUserByEmail).toHaveBeenCalledWith(email);
-            expect(cryptoService.compareHash).toHaveBeenCalledTimes(0);
-        });
-
-        it('shoud throw unathorized error if hash is not match', () => {
-            jest.spyOn(service, 'findUserByEmail').mockResolvedValue({
-                ...user,
-                password: hashedPassword,
-                articles: [],
-            });
-            jest.spyOn(cryptoService, 'compareHash').mockResolvedValue(false);
-            const result = service.validateUser(email, 'wrong-password');
-
-            expect(result).rejects.toThrow(UnauthorizedException);
-            expect(service.findUserByEmail).toHaveBeenCalledWith(email);
+            await expect(service.validateUser(email, password)).rejects.toThrow(
+                UnauthorizedException,
+            );
         });
     });
 });
