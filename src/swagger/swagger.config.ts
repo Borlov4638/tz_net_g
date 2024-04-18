@@ -1,29 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export function swaggerSetup(app: INestApplication) {
+export function swaggerSetup(app: INestApplication): void {
     const config = new DocumentBuilder()
-        .setTitle('Telegiv')
-        .setDescription('The cats API description')
+        .setTitle('Task API')
+        .setDescription('Test task for network group')
         .setVersion('1.0')
-        .addApiKey(
-            {
-                type: 'apiKey',
-                name: 'Bearer token manager',
-                in: 'header',
-                description: "Manager's token",
-            },
-            'Bearer token manager',
-        )
-        .addApiKey(
-            {
-                type: 'apiKey',
-                name: 'customer-token',
-                in: 'header',
-                description: 'Customer token',
-            },
-            'Bearer token customer',
-        )
         .addSecurity('basic', {
             type: 'http',
             scheme: 'basic',
@@ -33,7 +15,12 @@ export function swaggerSetup(app: INestApplication) {
             scheme: 'bearer',
             bearerFormat: 'JWT',
         })
-        .addCookieAuth('refresh-token')
+        .addCookieAuth('refreshToken', {
+            name: 'refreshToken',
+            type: 'http',
+            in: 'Header',
+            scheme: 'Bearer',
+        })
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);

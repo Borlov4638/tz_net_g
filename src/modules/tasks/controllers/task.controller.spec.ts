@@ -111,7 +111,10 @@ describe('TaskController', () => {
         it('should update a task', async () => {
             const userId = 'user123';
             const taskId = 1;
-            const updateTaskDto: UpdateTaskDTO = { title: 'Updated Task Title' };
+            const updateTaskDto: UpdateTaskDTO = {
+                title: 'Updated Task Title',
+                description: 'some descrition',
+            };
             jest.spyOn(taskService, 'updateTask').mockResolvedValue(undefined);
 
             await controller.updateTask(taskId, updateTaskDto, {

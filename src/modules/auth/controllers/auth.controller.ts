@@ -12,16 +12,16 @@ import { Response } from 'express';
 
 import { User } from '../../../decorators/get-user-from-request.decorator';
 import { UserDataWithoutPassword } from '../../../modules/users/types/user-without-pass.type';
+import { SwaggerDecoratorsByLogin } from '../../../swagger/auth/login.swagger.decorator';
+import { SwaggerDecoratorsByLogout } from '../../../swagger/auth/logout.swagger.decorator';
+import { SwaggerDecoratorsByRefreshToken } from '../../../swagger/auth/refresh.swagger.decorator';
+import { SwaggerDecoratorsByRegistration } from '../../../swagger/auth/registration.swagger.decorator';
 import { UserService } from '../../users/services/user.service';
 import { UserRegistrationDTO } from '../dto/user-registration.dto';
 import { LocalAuthGuard } from '../guards/local-auth-guard.guard';
 import { RefreshTokenAuthGuard } from '../guards/refresh-jwt.guard';
 import { UsernameExistGuard } from '../guards/user-exists.guard';
 import { AuthService } from '../services/auth.service';
-import { SwaggerDecoratorsByLogin } from '../../../swagger/auth/login.swagger.decorator';
-import { SwaggerDecoratorsByLogout } from '../../../swagger/auth/logout.swagger.decorator';
-import { SwaggerDecoratorsByRefreshToken } from '../../../swagger/auth/refresh.swagger.decorator';
-import { SwaggerDecoratorsByRegistration } from '../../../swagger/auth/registration.swagger.decorator';
 import { UsersRefreshTokenPayload } from '../types/refresh-token-payload.type';
 
 @ApiTags('Auth')

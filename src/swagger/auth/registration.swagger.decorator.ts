@@ -6,7 +6,7 @@ import {
     ApiOperation,
 } from '@nestjs/swagger';
 
-import { RegistrationResponseDTO } from '../../modules/auth/dto/registartion-response.dto';
+import { RegistrationViewModel } from '../../modules/auth/dto/registartion.view-model.dto';
 import { UserRegistrationDTO } from '../../modules/auth/dto/user-registration.dto';
 
 export function SwaggerDecoratorsByRegistration(): MethodDecorator {
@@ -16,7 +16,7 @@ export function SwaggerDecoratorsByRegistration(): MethodDecorator {
         ApiBody({ type: UserRegistrationDTO }),
         ApiCreatedResponse({
             description: 'User registered successfully',
-            type: RegistrationResponseDTO,
+            type: RegistrationViewModel,
         }),
         ApiBadRequestResponse({ description: 'Invalid request' }),
     );

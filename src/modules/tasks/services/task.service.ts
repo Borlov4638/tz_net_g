@@ -4,21 +4,11 @@ import { ConfigService } from '@nestjs/config';
 import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
+import { AllTasksViewModel } from '../dto/get-all-tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
 import { TaskRepository } from '../repositories/task.repository';
 //TODO: переместить тип в отдельный файл
-export class AllTasksViewModel {
-    meta: {
-        page: number;
-        pageSize: number;
-        totalPages: number;
-        totalRecords: number;
-        sortOrder: string;
-        sortBy: string;
-    };
-    data: TaskEntity[];
-}
 
 @Injectable()
 export class TaskService {
@@ -102,3 +92,4 @@ export class TaskService {
         await this.redisService.remove(`ONE_TASK/${taskId}`);
     }
 }
+export { AllTasksViewModel };

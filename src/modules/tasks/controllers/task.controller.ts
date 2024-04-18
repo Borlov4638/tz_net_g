@@ -12,6 +12,12 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { SwaggerDecoratorsByCreateTask } from 'src/swagger/tasks/create-task.swagger.decorator';
+import { SwaggerDecoratorsByDeleteTask } from 'src/swagger/tasks/delete-task.swagger.decorator';
+import { SwaggerDecoratorsByGetAllTasks } from 'src/swagger/tasks/get-all-tasks.swagger.decorator';
+import { SwaggerDecoratorsByGetOneTask } from 'src/swagger/tasks/get-one-task.swagger.decorator';
+import { SwaggerDecoratorsByUpdateTask } from 'src/swagger/tasks/update-task.swagger.decorator';
 
 import { User } from '../../../decorators/get-user-from-request.decorator';
 import { AccessTokenAuthGuard } from '../../../modules/auth/guards/access-jwt.guard';
@@ -22,20 +28,24 @@ import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
 import { AllTasksViewModel, TaskService } from '../services/task.service';
 
+@ApiTags('Tasks')
 @Controller('tasks')
 export class TaskController {
     constructor(private taskService: TaskService) {}
 
+    @SwaggerDecoratorsByGetAllTasks()
     @Get()
     async getAllTasks(@Query() query: GetAllTasksQuery): Promise<AllTasksViewModel> {
         return this.taskService.getAllTasks(query);
     }
 
+    @SwaggerDecoratorsByGetOneTask()
     @Get(':id')
     async getTaskById(@Param('id', new ParseIntPipe()) id: number): Promise<TaskEntity> {
         return this.taskService.getTaskById(id);
     }
 
+    @SwaggerDecoratorsByCreateTask()
     @UseGuards(AccessTokenAuthGuard)
     @Post()
     async createTask(
@@ -45,6 +55,7 @@ export class TaskController {
         return this.taskService.createTask(user.id, dto);
     }
 
+    @SwaggerDecoratorsByUpdateTask()
     @HttpCode(HttpStatus.NO_CONTENT)
     @UseGuards(AccessTokenAuthGuard)
     @Put(':id')
@@ -56,6 +67,7 @@ export class TaskController {
         await this.taskService.updateTask(user.id, taskId, dto);
     }
 
+    @SwaggerDecoratorsByDeleteTask()
     @HttpCode(HttpStatus.NO_CONTENT)
     @UseGuards(AccessTokenAuthGuard)
     @Delete(':id')

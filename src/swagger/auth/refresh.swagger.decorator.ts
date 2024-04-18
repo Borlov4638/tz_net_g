@@ -23,6 +23,6 @@ export function SwaggerDecoratorsByRefreshToken(): MethodDecorator {
                 },
             },
         }),
-        ApiCookieAuth('RefreshToken'),
+        ApiCookieAuth(),
     );
 }

@@ -11,6 +11,6 @@ export function SwaggerDecoratorsByLogout(): MethodDecorator {
         ApiOperation({ summary: 'Logout user' }),
         ApiOkResponse({ description: 'User logged out successfully' }),
         ApiUnauthorizedResponse({ description: 'Unauthorized' }),
-        ApiCookieAuth('refreshToken'),
+        ApiCookieAuth(),
     );
 }
