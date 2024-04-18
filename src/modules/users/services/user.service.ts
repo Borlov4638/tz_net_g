@@ -5,13 +5,14 @@ import { Repository } from 'typeorm';
 import { CryptoService } from '../../utils/crypto/crypto.service';
 import { UserEntity } from '../entities/user.entity';
 import { UserDataWithoutPassword } from '../types/user-without-pass.type';
+import { UserRepository } from '../repositories/user.repository';
 
 //TODO: вынести методы работы с БД в репозиторий
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+        private userRepository: UserRepository,
         private cryptoService: CryptoService,
     ) {}
 
@@ -24,14 +25,11 @@ export class UserService {
         user.email = email;
         user.username = username;
         user.password = await this.cryptoService.hashData(password);
-        return this.userRepo.save(user).then((u) => {
-            const { password, ...userData } = u;
-            return userData;
-        });
+        return this.userRepository.createUser(user);
     }
 
     async findUserByEmail(email: string): Promise<UserEntity> {
-        return this.userRepo.findOne({ where: { email } });
+        return this.userRepository.getByEmail(email);
     }
 
     async validateUser(email: string, pass: string): Promise<UserDataWithoutPassword> {
