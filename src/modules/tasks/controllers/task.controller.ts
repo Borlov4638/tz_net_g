@@ -20,14 +20,14 @@ import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
-import { TaskService } from '../services/task.service';
+import { AllTasksViewModel, TaskService } from '../services/task.service';
 
 @Controller('tasks')
 export class TaskController {
     constructor(private taskService: TaskService) {}
 
     @Get()
-    async getAllTasks(@Query() query: GetAllTasksQuery) {
+    async getAllTasks(@Query() query: GetAllTasksQuery): Promise<AllTasksViewModel> {
         return this.taskService.getAllTasks(query);
     }
 

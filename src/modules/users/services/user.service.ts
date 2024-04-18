@@ -17,11 +17,8 @@ export class UserService {
         password: string,
         username: string,
     ): Promise<UserDataWithoutPassword> {
-        const user = new UserEntity();
-        user.email = email;
-        user.username = username;
-        user.password = await this.cryptoService.hashData(password);
-        return this.userRepository.createUser(user);
+        const hashedPassword = await this.cryptoService.hashData(password);
+        return this.userRepository.createUser(email, hashedPassword, username);
     }
 
     async findUserByEmail(email: string): Promise<UserEntity> {

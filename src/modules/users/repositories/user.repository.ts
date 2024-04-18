@@ -9,11 +9,19 @@ import { UserDataWithoutPassword } from '../types/user-without-pass.type';
 export class UserRepository {
     constructor(@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>) {}
 
-    async createUser(user: UserEntity): Promise<UserDataWithoutPassword> {
+    async createUser(
+        email: string,
+        password: string,
+        username: string,
+    ): Promise<UserDataWithoutPassword> {
+        const user = new UserEntity();
+        user.email = email;
+        user.username = username;
+        user.password = password;
+
         return this.userRepo
             .createQueryBuilder()
             .insert()
-            .into(UserEntity)
             .values(user)
             .returning('*')
             .execute()
@@ -24,9 +32,6 @@ export class UserRepository {
     }
 
     async getByEmail(email: string): Promise<UserEntity> {
-        return this.userRepo
-            .createQueryBuilder('u')
-            .where('u.email = :email', { email })
-            .getOne();
+        return this.userRepo.createQueryBuilder().where({ email }).getOne();
     }
 }

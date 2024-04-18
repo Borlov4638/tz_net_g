@@ -15,27 +15,27 @@ export class TaskRepository {
     async getAllWithPagination(query: GetAllTasksQuery): Promise<AllTasksViewModel> {
         const page = +query.page || 1;
         const pageSize = +query.pageSize || 10;
-        const skip = (page - 1) * pageSize;
         const sortOrder = query.sortOrder || 'DESC';
         const sortBy = query.sortBy || 'title';
-        return this.taskRepo
-            .findAndCount({
-                where: {},
-                order: { [sortBy]: `${sortOrder}` },
-                skip: skip,
-                take: pageSize,
-            })
-            .then(([results, total]) => ({
-                meta: {
-                    page,
-                    pageSize,
-                    totalPages: Math.ceil(total / pageSize),
-                    totalRecords: total,
-                    sortOrder: sortOrder === 'ASC' ? 'ascending' : 'descending',
-                    sortBy: sortBy,
-                },
-                data: results,
-            }));
+
+        const [results, total] = await this.taskRepo
+            .createQueryBuilder('task')
+            .orderBy(`task.${sortBy}`, sortOrder)
+            .skip((page - 1) * pageSize)
+            .take(pageSize)
+            .getManyAndCount();
+
+        return {
+            meta: {
+                page,
+                pageSize,
+                totalPages: Math.ceil(total / pageSize),
+                totalRecords: total,
+                sortOrder: sortOrder === 'ASC' ? 'ascending' : 'descending',
+                sortBy: sortBy,
+            },
+            data: results,
+        };
     }
 
     async create(userId: string, data: CreateTaskDTO): Promise<TaskEntity> {
@@ -45,7 +45,13 @@ export class TaskRepository {
             task.description = data.description;
             task.title = data.title;
             task.status = data.status ? data.status : false;
-            return await this.taskRepo.save(task);
+            return this.taskRepo
+                .createQueryBuilder()
+                .insert()
+                .values(task)
+                .returning('*')
+                .execute()
+                .then((result) => result.generatedMaps[0] as TaskEntity);
         } catch (e) {
             console.log('Error creating a task', e);
             throw e;
@@ -54,7 +60,7 @@ export class TaskRepository {
 
     async getById(id: number): Promise<TaskEntity | undefined> {
         try {
-            return await this.taskRepo.findOne({ where: { id } });
+            return await this.taskRepo.createQueryBuilder().where({ id }).getOne();
         } catch (e) {
             console.log('Error getting a task', e);
             throw e;
@@ -63,7 +69,16 @@ export class TaskRepository {
 
     async update(id: number, data: UpdateTaskDTO): Promise<void> {
         try {
-            await this.taskRepo.update({ id }, data);
+            await this.taskRepo
+                .createQueryBuilder()
+                .update()
+                .set({
+                    title: data.title,
+                    description: data.description,
+                    status: data.status,
+                })
+                .where({ id })
+                .execute();
         } catch (e) {
             console.log('Error updating a task', e);
             throw e;
@@ -71,7 +86,7 @@ export class TaskRepository {
     }
     async delete(id: number): Promise<void> {
         try {
-            await this.taskRepo.delete({ id });
+            await this.taskRepo.createQueryBuilder().delete().where({ id }).execute();
         } catch (e) {
             console.log('Error deleting a task', e);
             throw e;
