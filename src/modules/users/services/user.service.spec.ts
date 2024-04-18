@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CryptoService } from '../../utils/crypto/crypto.service';
-import { UserRepository } from '../repositories/user.repository';
-import { UserEntity } from '../entities/user.entity'; // Ensure this import
+import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+import { CryptoService } from '../../utils/crypto/crypto.service';
+import { UserEntity } from '../entities/user.entity'; // Ensure this import
+import { UserRepository } from '../repositories/user.repository';
+import { UserService } from './user.service';
 
 describe('UserService', () => {
     let service: UserService;

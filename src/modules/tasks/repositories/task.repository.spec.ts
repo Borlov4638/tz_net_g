@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { TaskRepository } from './task.repository';
-import { TaskEntity } from '../entities/task.entity';
+
+import { SortOrder } from '../../../modules/utils/generic/generic-parigation-filter';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery, TasksSortByEnum } from '../dto/get-all tasks.dto';
-import { SortOrder } from '../../../modules/utils/generic/generic-parigation-filter';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
+import { TaskEntity } from '../entities/task.entity';
+import { TaskRepository } from './task.repository';
 
 describe('TaskRepository', () => {
     let taskRepository: TaskRepository;

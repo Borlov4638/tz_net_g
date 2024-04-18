@@ -1,14 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AllTasksViewModel, TaskService } from './task.service';
-import { TaskRepository } from '../repositories/task.repository';
-import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
-import { ConfigService } from '@nestjs/config';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
+import { UserEntity } from '../../../modules/users/entities/user.entity';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
-import { UserEntity } from '../../../modules/users/entities/user.entity';
+import { TaskRepository } from '../repositories/task.repository';
+import { AllTasksViewModel, TaskService } from './task.service';
 
 describe('TaskService', () => {
     let taskService: TaskService;
@@ -201,7 +202,10 @@ describe('TaskService', () => {
             it('should update a task', async () => {
                 const userId = 'user123';
                 const taskId = 1;
-                const updateTaskDto: UpdateTaskDTO = { title: 'Updated Task Title' };
+                const updateTaskDto: UpdateTaskDTO = {
+                    title: 'Updated Task Title',
+                    description: 'New Desc',
+                };
                 const task: TaskEntity = {
                     id: taskId,
                     title: 'Task Title',
@@ -224,7 +228,10 @@ describe('TaskService', () => {
             it('should throw NotFoundException if task not found', async () => {
                 const userId = 'user123';
                 const taskId = 1;
-                const updateTaskDto: UpdateTaskDTO = { title: 'Updated Task Title' };
+                const updateTaskDto: UpdateTaskDTO = {
+                    title: 'Updated Task Title',
+                    description: 'some',
+                };
 
                 jest.spyOn(taskRepository, 'getById').mockResolvedValue(null);
 
@@ -239,7 +246,10 @@ describe('TaskService', () => {
             it('should throw UnauthorizedException if user is not the author of the task', async () => {
                 const userId = 'user456';
                 const taskId = 1;
-                const updateTaskDto: UpdateTaskDTO = { title: 'Updated Task Title' };
+                const updateTaskDto: UpdateTaskDTO = {
+                    title: 'Updated Task Title',
+                    description: 'some',
+                };
                 const task: TaskEntity = {
                     id: taskId,
                     title: 'Task Title',
