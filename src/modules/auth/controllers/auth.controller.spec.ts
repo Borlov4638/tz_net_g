@@ -3,7 +3,7 @@ import { Response } from 'express';
 
 import { UserDataWithoutPassword } from '../../../modules/users/types/user-without-pass.type';
 import { UserService } from '../../users/services/user.service';
-import { UserLoginAndRegistrationDTO } from '../dto/user-registration.dto';
+import { UserRegistrationDTO } from '../dto/user-registration.dto';
 import { LocalAuthGuard } from '../guards/local-auth-guard.guard';
 import { RefreshTokenAuthGuard } from '../guards/refresh-jwt.guard';
 import { UsernameExistGuard } from '../guards/user-exists.guard';
@@ -51,7 +51,7 @@ describe('AuthController', () => {
 
     describe('registration', () => {
         it('should create a new user', async () => {
-            const dto: UserLoginAndRegistrationDTO = {
+            const dto: UserRegistrationDTO = {
                 email: 'test@example.com',
                 password: 'password',
                 username: 'testuser',

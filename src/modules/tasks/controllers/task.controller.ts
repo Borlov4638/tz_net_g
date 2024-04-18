@@ -12,10 +12,10 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
+
 import { User } from '../../../decorators/get-user-from-request.decorator';
 import { AccessTokenAuthGuard } from '../../../modules/auth/guards/access-jwt.guard';
 import { UsersAccessTokenPayload } from '../../../modules/auth/types/access-token-payload.type';
-
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';

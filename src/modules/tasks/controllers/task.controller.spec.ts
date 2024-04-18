@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskController } from './task.controller';
-import { TaskService } from '../services/task.service';
+
+import { UserEntity } from '../../../modules/users/entities/user.entity';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
+import { TaskService } from '../services/task.service';
 import { AllTasksViewModel } from '../services/task.service';
-import { UserEntity } from '../../../modules/users/entities/user.entity';
+import { TaskController } from './task.controller';
 
 describe('TaskController', () => {
     let controller: TaskController;

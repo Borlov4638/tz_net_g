@@ -1,14 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AllTasksViewModel, TaskService } from './task.service';
-import { TaskRepository } from '../repositories/task.repository';
-import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
-import { ConfigService } from '@nestjs/config';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { RedisManagerService } from '../../../modules/redis/services/redis-manager.service';
+import { UserEntity } from '../../../modules/users/entities/user.entity';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
-import { UserEntity } from '../../../modules/users/entities/user.entity';
+import { TaskRepository } from '../repositories/task.repository';
+import { AllTasksViewModel, TaskService } from './task.service';
 
 describe('TaskService', () => {
     let taskService: TaskService;
