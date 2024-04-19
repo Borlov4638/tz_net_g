@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GenericPaginationViewModel } from 'src/modules/utils/generic/generic-pagintion.view-model';
+import { GenericPaginationViewModel } from '../../../modules/utils/generic/generic-pagintion.view-model';
 
 import { TaskEntity } from '../entities/task.entity';
 

@@ -6,8 +6,8 @@ import {
     ApiSecurity,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { CreateTaskDTO } from 'src/modules/tasks/dto/create-task.dto';
-import { TaskEntity } from 'src/modules/tasks/entities/task.entity';
+import { CreateTaskDTO } from '../../modules/tasks/dto/create-task.dto';
+import { TaskEntity } from '../../modules/tasks/entities/task.entity';
 
 export function SwaggerDecoratorsByCreateTask(): MethodDecorator {
     return applyDecorators(

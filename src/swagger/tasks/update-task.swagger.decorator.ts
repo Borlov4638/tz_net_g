@@ -7,7 +7,7 @@ import {
     ApiResponse,
     ApiSecurity,
 } from '@nestjs/swagger';
-import { UpdateTaskDTO } from 'src/modules/tasks/dto/update-task.dto';
+import { UpdateTaskDTO } from '../../modules/tasks/dto/update-task.dto';
 
 export function SwaggerDecoratorsByUpdateTask(): MethodDecorator {
     return applyDecorators(

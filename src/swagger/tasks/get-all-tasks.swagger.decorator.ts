@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { AllTasksViewModel } from 'src/modules/tasks/services/task.service';
+import { AllTasksViewModel } from '../../modules/tasks/services/task.service';
 
 export function SwaggerDecoratorsByGetAllTasks(): MethodDecorator {
     return applyDecorators(
