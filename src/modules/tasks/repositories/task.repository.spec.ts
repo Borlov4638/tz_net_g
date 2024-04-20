@@ -7,7 +7,7 @@ import { SortOrder } from '../../../modules/utils/generic/generic-parigation-fil
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery, TasksSortByEnum } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
-import { TaskEntity } from '../entities/task.entity';
+import { TaskEntity, TaskStatus } from '../entities/task.entity';
 import { TaskRepository } from './task.repository';
 
 describe('TaskRepository', () => {
@@ -47,7 +47,7 @@ describe('TaskRepository', () => {
                     title: 'Task 1',
                     author: 'some uuid',
                     description: 'some descr',
-                    status: true,
+                    status: TaskStatus.OPEN,
                     user: {} as UserEntity,
                 },
                 {
@@ -55,7 +55,7 @@ describe('TaskRepository', () => {
                     title: 'Task 2',
                     author: 'some uuid',
                     description: 'some descr',
-                    status: true,
+                    status: TaskStatus.OPEN,
                     user: {} as UserEntity,
                 },
             ];
@@ -83,7 +83,7 @@ describe('TaskRepository', () => {
             const mockData: CreateTaskDTO = {
                 title: 'New Task',
                 description: 'Task description',
-                status: false,
+                status: TaskStatus.OPEN,
             };
             const mockTask: TaskEntity = {
                 id: 1,
@@ -143,7 +143,7 @@ describe('TaskRepository', () => {
             const mockData: UpdateTaskDTO = {
                 title: 'Updated Task',
                 description: 'Updated description',
-                status: true,
+                status: TaskStatus.DONE,
             };
 
             const mockQueryBuilder = {

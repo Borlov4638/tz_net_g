@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { TaskStatus } from '../entities/task.entity';
 
 export class CreateTaskDTO {
     @IsString()
@@ -10,8 +11,8 @@ export class CreateTaskDTO {
     @IsNotEmpty()
     @ApiProperty()
     description: string;
-    @IsBoolean()
     @IsOptional()
-    @ApiProperty({ default: false })
-    status?: boolean;
+    @IsEnum(TaskStatus)
+    @ApiProperty({ default: TaskStatus.OPEN })
+    status?: TaskStatus;
 }

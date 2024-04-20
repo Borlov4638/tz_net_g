@@ -7,7 +7,7 @@ import { UserEntity } from '../../../modules/users/entities/user.entity';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
-import { TaskEntity } from '../entities/task.entity';
+import { TaskEntity, TaskStatus } from '../entities/task.entity';
 import { TaskRepository } from '../repositories/task.repository';
 import { AllTasksViewModel, TaskService } from './task.service';
 
@@ -143,7 +143,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: 'user123',
                     user: {} as UserEntity,
                 };
@@ -170,7 +170,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: 'user123',
                     user: {} as UserEntity,
                 };
@@ -210,7 +210,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: userId,
                     user: {} as UserEntity,
                 };
@@ -254,7 +254,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: 'user123',
                     user: {} as UserEntity,
                 };
@@ -278,7 +278,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: userId,
                     user: {} as UserEntity,
                 };
@@ -314,7 +314,7 @@ describe('TaskService', () => {
                     id: taskId,
                     title: 'Task Title',
                     description: 'Task Description',
-                    status: false,
+                    status: TaskStatus.OPEN,
                     author: 'user123',
                     user: {} as UserEntity,
                 };

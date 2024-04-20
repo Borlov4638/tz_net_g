@@ -8,7 +8,6 @@ import { AllTasksViewModel } from '../dto/get-all-tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
 import { TaskEntity } from '../entities/task.entity';
 import { TaskRepository } from '../repositories/task.repository';
-//TODO: переместить тип в отдельный файл
 
 @Injectable()
 export class TaskService {
@@ -71,7 +70,6 @@ export class TaskService {
             );
         }
         await this.taskRepository.update(taskId, data);
-        //TODO: нужно ли бобавлять инвалидацию для списка всех таскок
         //invalidate cache for this article
         await this.redisService.remove(`ONE_TASK/${taskId}`);
     }

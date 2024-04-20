@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateTaskDTO } from '../dto/create-task.dto';
 import { GetAllTasksQuery } from '../dto/get-all tasks.dto';
 import { UpdateTaskDTO } from '../dto/update-task.dto';
-import { TaskEntity } from '../entities/task.entity';
+import { TaskEntity, TaskStatus } from '../entities/task.entity';
 import { AllTasksViewModel } from '../services/task.service';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class TaskRepository {
             task.author = userId;
             task.description = data.description;
             task.title = data.title;
-            task.status = data.status ? data.status : false;
+            task.status = data.status ? data.status : TaskStatus.OPEN;
             return this.taskRepo
                 .createQueryBuilder()
                 .insert()

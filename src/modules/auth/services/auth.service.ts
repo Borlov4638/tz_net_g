@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,12 +13,14 @@ export class AuthService {
         private configService: ConfigService,
         private sessionService: SessionService,
     ) {}
+    private readonly logger = new Logger(AuthService.name);
 
     async refresh(
         userId: string,
         username: string,
         deviceId: string,
     ): Promise<TokenPair> {
+        this.logger.log(`Refreshing token for ${username} (User ID: ${userId})`);
         const tokens = await this.getTokens(userId, username, deviceId);
         const refreshHash = tokens.refreshToken.split('.')[2];
         await this.sessionService.createSession(userId, deviceId, refreshHash);
@@ -26,6 +28,8 @@ export class AuthService {
     }
 
     async login(userId: string, username: string): Promise<TokenPair> {
+        this.logger.log(`User ${username} is logging in`);
+
         const deviceId = uuidv4();
         const tokens = await this.getTokens(userId, username, deviceId);
         const refreshHash = tokens.refreshToken.split('.')[2];
@@ -34,6 +38,7 @@ export class AuthService {
     }
 
     async logout(deviceId: string): Promise<void> {
+        this.logger.log(`Device ${deviceId} is logging out`);
         await this.sessionService.deleteSession(deviceId);
     }
 

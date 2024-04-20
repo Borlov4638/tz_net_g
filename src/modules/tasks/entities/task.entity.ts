@@ -4,6 +4,12 @@ import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserEntity } from '../../../modules/users/entities/user.entity';
 
+export enum TaskStatus {
+    OPEN = 'OPEN',
+    IN_PROGRESS = 'IN PROGRES',
+    DONE = 'DONE',
+}
+
 @Entity()
 export class TaskEntity {
     @ApiProperty({ example: 1 })
@@ -20,8 +26,8 @@ export class TaskEntity {
     //TODO: оставил boolean : enum
 
     @ApiProperty()
-    @Column('boolean', { default: false })
-    status: boolean;
+    @Column('character varying', { default: TaskStatus.OPEN })
+    status: TaskStatus;
 
     @ApiProperty()
     @Column('uuid')
@@ -29,5 +35,4 @@ export class TaskEntity {
     @ManyToOne(() => UserEntity, (user) => user.id)
     @JoinColumn({ name: 'author' })
     user: UserEntity;
-    //TODO:  сделать дату создания задачи и ее редактирования
 }

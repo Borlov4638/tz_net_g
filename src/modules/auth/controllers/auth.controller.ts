@@ -29,8 +29,6 @@ import { UsersRefreshTokenPayload } from '../types/refresh-token-payload.type';
 export class AuthController {
     constructor(private userService: UserService, private authService: AuthService) {}
 
-    //TODO: перенести guard в функционал сервиса юзеров при создании сущности
-    //TODO: разделить создание и редактирование дто
     @SwaggerDecoratorsByRegistration()
     @UseGuards(UsernameExistGuard)
     @HttpCode(HttpStatus.CREATED)
